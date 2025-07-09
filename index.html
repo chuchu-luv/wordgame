@@ -242,6 +242,7 @@
     }
 
     function toggleSleep() {
+      if (dead) return;
       isSleeping = false;
       document.getElementById("dino").src = "dino.png";
       document.getElementById("feedback").innerText = "";
