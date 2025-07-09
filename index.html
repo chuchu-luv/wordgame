@@ -244,7 +244,9 @@
       isSleeping = false;
       document.getElementById("dino").src = "dino.png";
       document.getElementById("feedback").innerText = "";
-      statusTimer = setInterval(updateStatus, 3000);
+      if (!statusTimer) {
+        statusTimer = setInterval(updateStatus, 3000);
+      }
     }
 
     function resetGame() {
