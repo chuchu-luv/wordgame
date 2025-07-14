@@ -94,7 +94,6 @@
     <button onclick="resetGame()" class="px-4 py-2 bg-red-400 text-white rounded-full mb-8">다시하기</button>
   </div>
 
-  
 
   <script>
     let dinoSize = 0.2;
@@ -113,6 +112,15 @@
       .then(res => res.json())
       .then(data => {
         words = data;
+        
+        const saved = localStorage.getItem("dinoState");
+        if (saved) {
+          const state = JSON.parse(saved);
+          hunger = state.hunger || 100;
+          love = state.love || 0;
+          score = state.score || 0;
+          dinoSize = state.dinoSize || 0.2;
+        }
         pickWord();
         updateBars();
         statusTimer = setInterval(updateStatus, 3000);
@@ -237,6 +245,7 @@
     function sleepMode() {
       isSleeping = true;
       clearInterval(statusTimer);
+      statusTimer = null;
       document.getElementById("dino").src = "sleeping_dino.png";
       document.getElementById("feedback").innerText = "😴 zzZ 잠들었어요!";
     }
@@ -255,6 +264,16 @@
       location.reload();
     }
 
+    function saveState() {
+      const state = {
+        hunger,
+        love,
+        score,
+        dinoSize,
+      };
+      localStorage.setItem("dinoState", JSON.stringify(state));
+    }
+    
     function resetIdleTimer() {
       if (idleTimer) clearTimeout(idleTimer);
       document.getElementById("sleepMessage").classList.add("hidden");
